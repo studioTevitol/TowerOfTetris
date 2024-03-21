@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-
-    GameObject Player;
     void Start()
     {
-        //Player = FindObjectOfType<Player>().gameObject;
+
     }
 
     // Update is called once per frame
@@ -18,10 +16,10 @@ public class Block : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Vector2 ptransform = collision.gameObject.transform.position;
         if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.transform.localPosition = new Vector2(ptransform.x, ptransform.y + 0.64f);
+            collision.gameObject.transform.localPosition = new Vector3(transform.position.x, transform.position.y + 0.32f, 1);
         }
+        collision.GetComponent<Player>().SetCurrentBlock(gameObject.GetComponent<Block>());
     }
 }
