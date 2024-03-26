@@ -161,6 +161,8 @@ MonoBehaviour:
   - {fileID: 3826159208714826692, guid: aba439d3ed396a04e9d5b5ef6d369f94, type: 3}
   - {fileID: 3826159208714826692, guid: 0669a1662eee38142877df56533d1fdf, type: 3}
   spawnArea: {fileID: 1425074261}
+  TickSpeed: 0.5
+  moveAmount: 0.32
 --- !u!4 &406347141
 Transform:
   m_ObjectHideFlags: 0
@@ -235,7 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07fa75e592214d7429e36be05af88a29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 200
+  jumpForce: 400
 --- !u!212 &431918539
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -300,8 +302,7 @@ Transform:
   m_LocalPosition: {x: 0.15, y: 0.03, z: 0.4903207}
   m_LocalScale: {x: 0.08, y: 0.08, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 519420032}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &431918541
@@ -435,12 +436,12 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.3750002, y: -0.375, z: -0.4903207}
-  m_LocalScale: {x: 12.5, y: 12.5, z: 1}
+  m_LocalPosition: {x: -0.120000005, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1425074261}
-  m_Father: {fileID: 431918540}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1425074260
 GameObject:
@@ -479,3 +480,4 @@ SceneRoots:
   m_Roots:
   - {fileID: 406347141}
   - {fileID: 431918540}
+  - {fileID: 519420032}

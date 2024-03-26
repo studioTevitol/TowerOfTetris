@@ -18,7 +18,7 @@ public class Block : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.transform.localPosition = new Vector3(transform.position.x, transform.position.y + 0.32f, 1);
+            collision.gameObject.transform.localPosition = new Vector3(transform.position.x, transform.position.y, 1);
         }
         collision.GetComponent<Player>().SetCurrentBlock(gameObject.GetComponent<Block>());
     }

@@ -129,7 +129,7 @@ public class Tetromino : MonoBehaviour
     {
         transform.position = new Vector3(transform.position.x, transform.position.y - SlotWidth, transform.position.z);
         //Debug.Log(player.GetCurrentBlock() == null);
-        if (player != null) player.transform.localPosition = new Vector3(player.GetCurrentBlock().transform.position.x, player.GetCurrentBlock().transform.position.y, 1);
+        if (player != null&&player.GetCurrentBlock()!=null) player.transform.localPosition = new Vector3(player.GetCurrentBlock().transform.position.x, player.GetCurrentBlock().transform.position.y, 1);
     }
     public void SetPlayer(Player player)
     {

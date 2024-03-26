@@ -7,12 +7,16 @@ public class Player : MonoBehaviour
     Tetromino attachedTetromino;
     Rigidbody2D rigidbody;
     Block currentBlock = null;
+    GameObject game;
+    public float horizontalSpeed = 3f;
     public float jumpForce = 5f;
+    
     void Start()
     {
         attachedTetromino = null;
         rigidbody = GetComponent<Rigidbody2D>();
         rigidbody.isKinematic = true;
+        
     }
 
     // Update is called once per frame
@@ -23,25 +27,33 @@ public class Player : MonoBehaviour
             rigidbody.isKinematic = false;
             rigidbody.AddForce(new Vector2(0, jumpForce));
         }
+        if (!rigidbody.isKinematic) rigidbody.velocity = new Vector2(Input.GetAxis("Horizontal") * horizontalSpeed, rigidbody.velocity.y);
+
         if (Input.GetKeyDown(KeyCode.W)) Move(new Vector2(0, 1)); 
         else if (Input.GetKeyDown(KeyCode.S)) Move(new Vector2(0, -1));
         else if (Input.GetKeyDown(KeyCode.A)) Move(new Vector2(-1, 0));
         else if (Input.GetKeyDown(KeyCode.D)) Move(new Vector2(1, 0));
-
+        
+        
         //Move(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
     }
+
+
+    //collisiona girince baðlý olunan tetrominoyu ayarla
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
-        attachedTetromino = collision.gameObject.GetComponentInParent<Tetromino>();
+        attachedTetromino = collision.GetComponentInParent<Tetromino>();
         rigidbody.isKinematic=true;
+        rigidbody.velocity = Vector2.zero;
 
     }
+    //Collisiondan çýkýnca baðlý olan tetrominoyu sýfýrla
     private void OnTriggerExit2D(Collider2D collision)
     {
         attachedTetromino = null;
         currentBlock = null;
     }
+
     void Move(Vector2 direction)
     {
         Debug.Log(direction.x + ", " + direction.y);
