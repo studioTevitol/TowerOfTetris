@@ -1,59 +1,60 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
     Tetromino attachedTetromino;
-    Rigidbody2D rigidbody;
+    Rigidbody2D Prigidbody;
     Block currentBlock = null;
     GameObject game;
     public float horizontalSpeed = 3f;
     public float jumpForce = 5f;
+    public bool isGrounded = false;
     
     void Start()
     {
         attachedTetromino = null;
-        rigidbody = GetComponent<Rigidbody2D>();
-        rigidbody.isKinematic = true;
+        Prigidbody = GetComponent<Rigidbody2D>();
+        Prigidbody.isKinematic = true;
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        //hold space to jump, press space to release. charge up jump by holding space
+        if (Input.GetKeyDown(KeyCode.Space)&&isGrounded)
         {
-            rigidbody.isKinematic = false;
-            rigidbody.AddForce(new Vector2(0, jumpForce));
+            currentBlock = null;
+            attachedTetromino = null;
+            isGrounded = false;
+            Prigidbody.isKinematic = false;
+            Prigidbody.AddForce(new Vector2(0, jumpForce));
         }
-        if (!rigidbody.isKinematic) rigidbody.velocity = new Vector2(Input.GetAxis("Horizontal") * horizontalSpeed, rigidbody.velocity.y);
+        if (!Prigidbody.isKinematic) Prigidbody.velocity = new Vector2(Input.GetAxis("Horizontal") * horizontalSpeed, Prigidbody.velocity.y);
 
         if (Input.GetKeyDown(KeyCode.W)) Move(new Vector2(0, 1)); 
         else if (Input.GetKeyDown(KeyCode.S)) Move(new Vector2(0, -1));
         else if (Input.GetKeyDown(KeyCode.A)) Move(new Vector2(-1, 0));
-        else if (Input.GetKeyDown(KeyCode.D)) Move(new Vector2(1, 0));
-        
-        
-        //Move(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+        else if (Input.GetKeyDown(KeyCode.D)) Move(new Vector2(1, 0));    
     }
 
 
-    //collisiona girince baðlý olunan tetrominoyu ayarla
+    //collisiona girince baï¿½lï¿½ olunan tetrominoyu ayarla
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        attachedTetromino = collision.GetComponentInParent<Tetromino>();
-        rigidbody.isKinematic=true;
-        rigidbody.velocity = Vector2.zero;
-
+        currentBlock = collision.GetComponent<Block>();
+        if (currentBlock!= null) {
+        isGrounded = true;
+        transform.localPosition = new Vector3(currentBlock.transform.position.x, currentBlock.transform.position.y, 1);
+        attachedTetromino = currentBlock.GetComponentInParent<Tetromino>();
+        Prigidbody.isKinematic = true;
+        Prigidbody.velocity = Vector2.zero;
+        attachedTetromino.SetPlayer(this);
+        }
     }
-    //Collisiondan çýkýnca baðlý olan tetrominoyu sýfýrla
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        attachedTetromino = null;
-        currentBlock = null;
-    }
-
     void Move(Vector2 direction)
     {
         Debug.Log(direction.x + ", " + direction.y);
@@ -61,18 +62,21 @@ public class Player : MonoBehaviour
         int currentblockIndexY = 0;
         if (attachedTetromino != null)
         {
+            int currentBlockIndexX;
+            int currentBlockIndexY;
             for (int i = 0; i < attachedTetromino.structure.Count; i++)
             {
-                if (attachedTetromino.structure[i] == null || attachedTetromino.structure[i].Contains(currentBlock) != true) continue;
-                int currentBlockIndexX = attachedTetromino.structure[i].IndexOf(currentBlock);
-                int currentBlockIndexY = i;
-                Debug.Log(currentBlockIndexX + ", " + currentBlockIndexY);
-
+                if (attachedTetromino.structure[i] == null || !attachedTetromino.structure[i].Contains(currentBlock)) continue;
+                currentBlockIndexX = attachedTetromino.structure[i].IndexOf(currentBlock);
+                currentBlockIndexY = i;
+                Debug.Log("index: " + currentBlockIndexX + ", rank: " + currentBlockIndexY);
+                break;
             }
 
-            currentBlock = attachedTetromino.structure[(int)(currentblockIndexY + direction.y)][(int)(currentblockIndexX + direction.x)];
+            SetCurrentBlock(attachedTetromino.structure[(int)(currentblockIndexY + direction.y)][(int)(currentblockIndexX + direction.x)]);
+            transform.localPosition = new Vector3(currentBlock.transform.position.x, currentBlock.transform.position.y, 1);
         }
-        
+        direction = new Vector2(0, 0);
     }
     public void SetCurrentBlock(Block block)
     {

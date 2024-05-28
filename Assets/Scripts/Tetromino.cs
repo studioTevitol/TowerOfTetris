@@ -113,15 +113,15 @@ public class Tetromino : MonoBehaviour
         else if (blocktype == blockType.T)
             structure = new List<List<Block>>
             {
-            new List<Block> { blocks[2], blocks[1], blocks[0] },
-            new List<Block> { null, blocks[3], null },
+            new List<Block> { blocks[3], blocks[2], blocks[0] },
+            new List<Block> { null, blocks[1], null },
 
             };
         else if (blocktype == blockType.O)
             structure = new List<List<Block>>
             {
-            new List<Block> { blocks[1], blocks[3] },
-            new List<Block> { blocks[0], blocks[2] },
+            new List<Block> { blocks[3], blocks[0] },
+            new List<Block> { blocks[2], blocks[1] },
             };
     }
 
