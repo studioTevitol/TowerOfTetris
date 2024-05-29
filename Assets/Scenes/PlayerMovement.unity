@@ -306,7 +306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   horizontalSpeed: 3
-  jumpForce: 300
+  jumpForce: 1000
   isGrounded: 0
 --- !u!212 &675042874
 SpriteRenderer:
