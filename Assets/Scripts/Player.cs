@@ -35,8 +35,8 @@ public class Player : MonoBehaviour
         }
         if (!Prigidbody.isKinematic) Prigidbody.velocity = new Vector2(Input.GetAxis("Horizontal") * horizontalSpeed, Prigidbody.velocity.y);
 
-        if (Input.GetKeyDown(KeyCode.W)) Move(new Vector2(0, 1)); 
-        else if (Input.GetKeyDown(KeyCode.S)) Move(new Vector2(0, -1));
+        if (Input.GetKeyDown(KeyCode.W)) Move(new Vector2(0, -1)); 
+        else if (Input.GetKeyDown(KeyCode.S)) Move(new Vector2(0, 1));
         else if (Input.GetKeyDown(KeyCode.A)) Move(new Vector2(-1, 0));
         else if (Input.GetKeyDown(KeyCode.D)) Move(new Vector2(1, 0));    
     }
@@ -58,23 +58,24 @@ public class Player : MonoBehaviour
     void Move(Vector2 direction)
     {
         Debug.Log(direction.x + ", " + direction.y);
-        int currentblockIndexX = 0;
-        int currentblockIndexY = 0;
+        int currentBlockIndexX = -1;
+        int currentBlockIndexY = -1;
         if (attachedTetromino != null)
         {
-            int currentBlockIndexX;
-            int currentBlockIndexY;
             for (int i = 0; i < attachedTetromino.structure.Count; i++)
             {
                 if (attachedTetromino.structure[i] == null || !attachedTetromino.structure[i].Contains(currentBlock)) continue;
                 currentBlockIndexX = attachedTetromino.structure[i].IndexOf(currentBlock);
                 currentBlockIndexY = i;
                 Debug.Log("index: " + currentBlockIndexX + ", rank: " + currentBlockIndexY);
+                Debug.Log("Findex: " + (int)(currentBlockIndexX + direction.x) + ", Frank: " + (int)(currentBlockIndexY + direction.y));
                 break;
             }
-
-            SetCurrentBlock(attachedTetromino.structure[(int)(currentblockIndexY + direction.y)][(int)(currentblockIndexX + direction.x)]);
-            transform.localPosition = new Vector3(currentBlock.transform.position.x, currentBlock.transform.position.y, 1);
+            if (currentBlockIndexX != -1 && currentBlockIndexY != -1)
+            {
+                SetCurrentBlock(attachedTetromino.structure[(int)(currentBlockIndexY + direction.y)][(int)(currentBlockIndexX + direction.x)]);
+                transform.localPosition = new Vector3(currentBlock.transform.position.x, currentBlock.transform.position.y, 1);
+            }
         }
         direction = new Vector2(0, 0);
     }
